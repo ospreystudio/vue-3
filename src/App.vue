@@ -33,7 +33,20 @@
       @remove="removePost"
       v-if="!isPostsLoading"
        />
-  <div v-else>Идёт загрузка...</div>
+  <div class="page__wrapper">
+    <div v-for="pageNumber in totalPages"
+          :key="pageNumber"
+          class="page"
+          :class="{'current_page': page === pageNumber
+          }"
+         @click="changePage(pageNumber)"
+          >
+
+      {{ pageNumber }}
+    </div>
+  </div>
+  <div ></div>
+
 </template>
 
 <script>
@@ -53,6 +66,9 @@ export default {
       isPostsLoading: false,
       selectedSort: '',
       searchQuery: '',
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       sortOptions: [
           {value: 'title', name: 'По названию'},
           {value: 'body', name: 'По содержимому'},
@@ -70,10 +86,20 @@ export default {
       showDialog() {
         this.dialogVisible = true
       },
+      changePage(pageNumber) {
+        this.page = pageNumber
+        // this.fetchPosts()  отвечает за смену траницы
+      },
       async fetchPosts() {
         this.isPostsLoading =true
           try {
-              const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+              const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                params: {
+                  _page: this.page,
+                  _limit: this.limit,
+                }
+            });
+              this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
               this.posts = response.data;
           } catch (e) {
             alert('Ошибка')
@@ -106,6 +132,12 @@ export default {
   //   },
   // }
 
+  watch: {
+    page() {
+      this.fetchPosts() // отбражение страниц с помощью наблюдателя
+    }
+  }
+
 }
 </script>
 
@@ -126,6 +158,22 @@ export default {
 form {
   display: flex;
   flex-direction: column;
+}
+
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+
+.page {
+  border: 1px solid black;
+  padding: 10px;
+  margin:5px;
+  cursor: pointer;
+}
+
+.current_page {
+  border: 2px solid teal;
 }
 
 </style>
