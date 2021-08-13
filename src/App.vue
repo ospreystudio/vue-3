@@ -1,18 +1,29 @@
 <template>
   <h1>Страница с постами</h1>
-  <my-button
-      @click="showDialog"
-      style="margin:15px 0">
+  <div class="app__btns">
+    <my-button
+        @click="showDialog"
 
-    Создать пользователя
-  </my-button>
+    >
+      Создать пользователя
+    </my-button>
+    <my-select
+        v-model="selectedSort"
+        :options="sortOptions"
+        >
+
+
+    </my-select>
+
+
+  </div>
   <my-dialog v-model:show="dialogVisible">
     <post-form
         @createPost = createPost />
   </my-dialog>
 
   <post-list
-      :posts="posts"
+      :posts="sortedPosts"
       @remove="removePost"
       v-if="!isPostsLoading"
        />
@@ -34,6 +45,11 @@ export default {
       posts: [],
       dialogVisible: false,
       isPostsLoading: false,
+      selectedSort: '',
+      sortOptions: [
+          {value: 'title', name: 'По названию'},
+          {value: 'body', name: 'По содержимому'},
+      ]
     }
   },
   methods: {
@@ -62,7 +78,22 @@ export default {
 
   mounted() {
     this.fetchPosts()
-  }
+  },
+
+  computed: {
+      sortedPosts() {
+          return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+      },
+  },
+
+  //Сортировка решение 2
+  // watch: {
+  //   selectedSort(newValue) {
+  //     this.posts.sort((post1, post2) => {
+  //         return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+  //     })
+  //   },
+  // }
 
 }
 </script>
@@ -74,14 +105,13 @@ export default {
    box-sizing: border-box;
  }
 
+.app__btns {
+  margin:15px 0;
+  display:flex;
+  justify-content: space-between;
+}
 
 
- .input {
-   width: 100%;
-   border: 1px solid teal;
-   padding: 10px 15px;
-   margin-top: 5px;
- }
 form {
   display: flex;
   flex-direction: column;
