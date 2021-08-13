@@ -3,6 +3,7 @@
   <my-input
       v-model="searchQuery"
       placeholder="Search..."
+      v-focus
   />
 
 
