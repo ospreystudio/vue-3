@@ -4,6 +4,7 @@ import components from "./components/UI";
 import router from "./components/router/router";
 import VIntersection from "./directives/VIntersection";
 import directives from "./directives/index.js";
+import store from "./store";
 
 
 const app = createApp(App)
@@ -20,6 +21,7 @@ app.directive('intersection', VIntersection)
 
 app
     .use(router)
+    .use(store)
     .mount('#app')
 
 
