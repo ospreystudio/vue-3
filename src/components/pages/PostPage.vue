@@ -146,11 +146,11 @@ export default {
 
   computed: {
     sortedPosts() {
-      return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+
     },
 
     sortedAdnSearchPosts() {
-      return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLocaleLowerCase()))
+
     }
   },
 
