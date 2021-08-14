@@ -1,5 +1,5 @@
 ## vue-3 by Янюшкин Вадим
-# You can see the App follow [This Link](https://vue-3.vercel.app/)
+# You can see the App follow [This Link](https://vue-3.vercel.app)
 [![N|Solid](https://i.ibb.co/vHpsNKL/logo.png)](https://nodesource.com/products/nsolid)
 ## Definition
 
